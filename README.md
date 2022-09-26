@@ -35,7 +35,7 @@ set security policies from-zone Production to-zone ExpressRoute-Public policy EX
 The idea is that the "AZURE_SQL_GLOBAL" Destination Address Book Object is then kept updated with only the current relevant IPv4 Address Space which Microsoft uses for Azure SQL, as per the [Microsoft Azure JSON Feed](https://www.microsoft.com/en-us/download/details.aspx?id=56519).
 
 ### Generated Policy Deployment
-The generated SRX syntax would still need to be deployed manually, or via other means (such as NMS, OSS, CI/CD Pipeline) into the relevant Juniper SRX Firewall Units. A suggested manual approach to this looks like the below, where `admin` is the SSH RW User for the Junos SRX Firewall with Management IP `10.99.99.99`:
+The generated SRX syntax would still need to be deployed manually, or via other means (such as NMS, OSS, CI/CD Pipeline) into the relevant Juniper SRX Firewall Units. A suggested manual approach to this looks like the below, where `admin` is the SSH RO User for the Junos SRX Firewall with Management IP `10.99.99.99`:
 1. Download the generated `azure_srx_delta_config.txt` file to the Network Management Jumpbox (i.e. NetDevOps Box with SSH access to the Juniper SRX)
 2. Use SCP to push this file to `/tmp/deploy.txt`:
    1. `scp azure_srx_delta_config.txt admin@10.99.99.99:/tmp/deploy.txt`
