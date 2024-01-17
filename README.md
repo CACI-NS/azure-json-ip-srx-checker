@@ -1,6 +1,8 @@
 # Azure JSON IP Feed to Juniper SRX Checker
 [![PyPI pyversions](https://img.shields.io/pypi/pyversions/ansicolortags.svg)](https://pypi.python.org/pypi/ansicolortags/) [![GitHub license](https://img.shields.io/badge/license-MIT-green.svg)](https://github.com/CACI-NS/azure-json-ip-srx-checker/blob/main/LICENSE)
 
+> Need help getting from NetDevOops to NetDevOps? Learn about how [Network Automation and NetDevOps at CACI](https://info.caci.co.uk/network-automation-devops-caci) can help you on your journey
+
 ## About
 Azure JSON IP Feed to Juniper SRX Checker is intended to be run on a periodic (i.e. daily) basis to check for updates/change/deletions made by Microsoft to their Azure IP Address Ranges as per the Microsoft-published [Azure IP Ranges and Service Tags – Public Cloud](https://www.microsoft.com/en-us/download/details.aspx?id=56519) JSON feed and convert into Junos SRX-comptaible Security Policy syntax/configuration.
 

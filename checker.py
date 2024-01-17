@@ -113,19 +113,17 @@ for azure_service in AZURE_SRX_MAP:
    else:
     # IP Address not present in current SRX Firewall config, addition needed
     print("  [" + azure_service + ", Add] " + ip_address_curr)
-    # Generate SRX Prefix list syntax
-    file_output += "set policy-options prefix-list PFX_FROM_CORP-AZURE-MICROSOFT-VRF_TO_Corporate-VRF " + ip_address_curr + "\n"
     # Generate SRX Address List syntax
-    file_output += "set security zones security-zone CORP-AZURE-MICROSOFT-VRF_Zone address-book address AZURE_PAAS_" + ip_address_curr + " " + ip_address_curr + "\n"
+    file_output += "set security zones security-zone ExpressRoute-Public address-book address AZURE_PAAS_" + ip_address_curr + " " + ip_address_curr + "\n"
     # Generate SRX Address Set syntax
-    file_output += "set security zones security-zone CORP-AZURE-MICROSOFT-VRF_Zone address-book address-set " + AZURE_SRX_MAP[azure_service] + " address AZURE_PAAS_" + ip_address_curr + "\n!\n" 
+    file_output += "set security zones security-zone ExpressRoute-Public address-book address-set " + AZURE_SRX_MAP[azure_service] + " address AZURE_PAAS_" + ip_address_curr + "\n!\n" 
 
  # Output to log
  print("\n Checking current Firewall Rules against Microsoft JSON entries...")
  # Loop through each Azure Service in SRX Firewall
  for azure_firewallline in srx_azure_list:
   # Only process lines that match Address Sets for current Azure Service being processed
-  if ("set security zones security-zone CORP-AZURE-MICROSOFT-VRF_Zone address-book address-set " + AZURE_SRX_MAP[azure_service]) in azure_firewallline:
+  if ("set security zones security-zone ExpressRoute-Public address-book address-set " + AZURE_SRX_MAP[azure_service]) in azure_firewallline:
    # Extract IP Address from current SRX config line
    ip_firewallline = re.findall(r'([0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\/[0-9]{2})', azure_firewallline)
    # Ignore deletes for custom Azure IPs (not in Microsoft JSON file but which need to be allowed-through)
@@ -141,12 +139,10 @@ for azure_service in AZURE_SRX_MAP:
      # IP Address missing from Microsoft JSON file, delete
      print("  [" + azure_service + ", Delete] " + ip_firewallline[0])
 
-     # Generate SRX Prefix list syntax
-     file_output += "delete policy-options prefix-list PFX_FROM_CORP-AZURE-MICROSOFT-VRF_TO_Corporate-VRF " + ip_firewallline[0] + "\n"
      # Generate SRX Address List syntax
-     file_output += "delete security zones security-zone CORP-AZURE-MICROSOFT-VRF_Zone address-book address AZURE_PAAS_" + ip_firewallline[0] + " " + ip_firewallline[0] + "\n"
+     file_output += "delete security zones security-zone ExpressRoute-Public address-book address AZURE_PAAS_" + ip_firewallline[0] + " " + ip_firewallline[0] + "\n"
      # Generate SRX Address Set syntax
-     file_output += "delete security zones security-zone CORP-AZURE-MICROSOFT-VRF_Zone address-book address-set " + AZURE_SRX_MAP[azure_service] + " address AZURE_PAAS_" + ip_firewallline[0] + "\n!\n" 
+     file_output += "delete security zones security-zone ExpressRoute-Public address-book address-set " + AZURE_SRX_MAP[azure_service] + " address AZURE_PAAS_" + ip_firewallline[0] + "\n!\n" 
 
 # Ouput delta SRX syntax
 print("\nWriting delta Junos SRX syntax to file [" + OUTPUT_DELTA_CONFIG + "]...")
